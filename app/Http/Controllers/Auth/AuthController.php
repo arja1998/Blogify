@@ -87,7 +87,13 @@ class AuthController extends Controller
     if ($data['role'] === 'author') {
         return redirect()->route('author.blogs.index')
             ->with('success', 'Welcome Author! You can start writing blogs.');
+
+
+        if ($user->hasRole('author')) {
+        $user->sendEmailVerificationNotification();
+        }
     }
+    
 
     return redirect()->route('home')
         ->with('success', 'Registration successful.');

@@ -13,6 +13,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicBlogController;
+use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -44,6 +46,8 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/blog/{slug}', [PublicBlogController::class, 'show'])->name('blog.show');
+
+
 
 Route::middleware(['auth', 'blocked', 'role:author'])
     ->prefix('author')

@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">Blogify</a>
@@ -40,6 +41,25 @@
                  @csrf
                 </form>
                 </li>
+
+
+                @auth
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                🔔 {{ auth()->user()->unreadNotifications->count() }}
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                @forelse(auth()->user()->unreadNotifications as $notification)
+                                    <li class="dropdown-item">
+                                        {{ $notification->data['message'] }}
+                                    </li>
+                                @empty
+                                    <li class="dropdown-item text-muted">No notifications</li>
+                                @endforelse
+                            </ul>
+                        </li>
+                 @endauth
 
 
                 @else

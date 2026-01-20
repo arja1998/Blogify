@@ -15,6 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
          $middleware->alias([
               'blocked' => \App\Http\Middleware\CheckBlockedUser::class,
               'role'    => \App\Http\Middleware\RoleMiddleware::class,
+             
+
 ]);
  
 
