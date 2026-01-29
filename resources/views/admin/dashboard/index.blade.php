@@ -53,6 +53,14 @@
     </div>
 </div>
 
+<div class="card mt-4">
+    <div class="card-body">
+        <h5 class="card-title">❤️ Most Liked Blogs</h5>
+
+        <canvas id="likesChart" height="120"></canvas>
+    </div>
+</div>
+
 @endsection
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -85,5 +93,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const likesCanvas = document.getElementById('likesChart');
+    if (!likesCanvas) {
+        console.warn('likesChart canvas not found');
+        return;
+    }
+
+    new Chart(likesCanvas, {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($topLikedBlogs->pluck('title')) !!},
+            datasets: [{
+                label: 'Likes',
+                data: {!! json_encode($topLikedBlogs->pluck('likes_count')) !!},
+                backgroundColor: '#F64E60'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+});
+</script>
+
 
 

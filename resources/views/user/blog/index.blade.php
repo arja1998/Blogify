@@ -70,6 +70,10 @@
             Posted by {{ $blog->author->name }}
             on {{ $blog->created_at->format('F d, Y') }}
         </p>
+        <span class="text-muted">
+    ❤️ {{ $blog->likes->count() }}
+</span>
+
     </div>
     <hr>
 @empty

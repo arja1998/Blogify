@@ -43,4 +43,14 @@ class Blog extends Model
     {
         return $this->hasMany(Comment::class);
     }
+    public function likes()
+{
+    return $this->hasMany(BlogLike::class);
+}
+
+public function isLikedByUser($user): bool
+{
+    return $this->likes()->where('user_id', $user->id)->exists();
+}
+
 }

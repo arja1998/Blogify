@@ -1,12 +1,15 @@
 @extends('user.layouts.app')
 
 @section('title', $blog->meta_title ?? $blog->title)
+
+
 @section('header_title', $blog->title)
 @section('header_subtitle', $blog->category->name)
 
 @section('content')
 
 {{-- Blog Content --}}
+
 @if($blog->featured_image)
     <img src="{{ Storage::url($blog->featured_image) }}" class="img-fluid mb-4">
 
@@ -16,6 +19,32 @@
     {!! nl2br(e($blog->content)) !!}
 </div>
 
+@auth
+    <form method="POST"
+          action="{{ route('blog.like', $blog) }}"
+          class="d-inline">
+        @csrf
+
+        <button type="submit"
+                class="btn btn-link p-0 text-decoration-none">
+
+            @if($blog->isLikedByUser(auth()->user()))
+                ❤️
+            @else
+                🤍
+            @endif
+
+            <span class="ms-1">
+                {{ $blog->likes->count() }}
+            </span>
+        </button>
+    </form>
+@else
+    <span>
+        🤍 {{ $blog->likes->count() }}
+    </span>
+@endauth
+
 <hr>
 
 {{-- COMMENTS SECTION --}}
@@ -24,7 +53,7 @@
 @forelse(
     $blog->comments()
         ->whereNull('parent_id')
-        ->where('status','approved')
+        
         ->latest()
         ->get()
     as $comment)

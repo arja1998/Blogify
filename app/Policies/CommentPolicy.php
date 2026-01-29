@@ -7,17 +7,8 @@ use App\Models\User;
 
 class CommentPolicy
 {
-  public function before(User $user)
-{
-    if ($user->isAdmin()) {
-        return true;
-    }
 
-    return null; // 👈 THIS IS CRITICAL
-}
-
-
-    /**
+/**
      * Create comment
      */
     public function create(User $user): bool
@@ -43,11 +34,5 @@ class CommentPolicy
         return $comment->user_id === $user->id;
     }
 
-    /**
-     * Approve comment (author of blog)
-     */
-    public function approve(User $user, Comment $comment): bool
-    {
-        return $comment->blog->user_id === $user->id;
-    }
+    
 }

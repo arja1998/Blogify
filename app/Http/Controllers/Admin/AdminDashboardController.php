@@ -21,6 +21,11 @@ class AdminDashboardController extends Controller
             'topBlogs' => Blog::orderByDesc('view_count')
             ->take(5)
             ->get(['title', 'view_count']),
+
+            'topLikedBlogs' => Blog::withCount('likes')
+            ->orderByDesc('likes_count')
+            ->take(5)
+            ->get(),
         ]);
         
     }

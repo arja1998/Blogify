@@ -36,7 +36,7 @@ class CommentController extends Controller
             'user_id'   => Auth::id(),
             'comment'   => $request->comment,
             'parent_id' => $request->parent_id,
-            'status'    => 'pending',
+            'status'    => 'approved',
         ]);
 
 
@@ -51,7 +51,7 @@ class CommentController extends Controller
 }
 
 
-        return back()->with('success', 'Comment submitted for approval.');
+        return back()->with('success', 'Comment added');
     }
 
     

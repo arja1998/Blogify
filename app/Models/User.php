@@ -46,6 +46,13 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function likedBlogs()
+{
+    return $this->belongsToMany(Blog::class, 'blog_likes')
+                ->withTimestamps();
+}
+
+
     /* ================= Helpers ================= */
 
     public function hasRole(string $role): bool

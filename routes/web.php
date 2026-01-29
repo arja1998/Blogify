@@ -9,11 +9,12 @@ use App\Http\Controllers\Admin\AdminTagController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Author\AuthorBlogController;
+use App\Http\Controllers\BlogLikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicBlogController;
-use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -38,6 +39,11 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
+
+Route::post('/blog/{blog}/like', [BlogLikeController::class, 'toggle'])
+    ->middleware('auth')
+    ->name('blog.like');
+
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')

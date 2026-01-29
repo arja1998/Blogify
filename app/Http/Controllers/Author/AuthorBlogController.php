@@ -42,54 +42,51 @@ class AuthorBlogController extends Controller
     /**
      * Store blog
      */
-    public function store(Request $request)
-    {
-        $this->authorize('create', Blog::class);
+   public function store(Request $request)
+{
+    $this->authorize('create', Blog::class);
 
-        $data = $request->validate([
-            'title'            => 'required|string|max:255',
-            'content'          => 'required|string',
-            'category_id'      => 'required|exists:categories,id',
-            'tags'             => 'nullable|array',
-            'tags.*'           => 'exists:tags,id',
-            'featured_image'   => 'nullable|image|',
-        ]);
+    $data = $request->validate([
+        'title'          => 'required|string|max:255',
+        'content'        => 'required|string',
+        'category_id'    => 'required|exists:categories,id',
+        'tags'           => 'nullable|array',
+        'tags.*'         => 'exists:tags,id',
+        'featured_image' => 'nullable|image',
+    ]);
 
-        $slug = Str::slug($data['title']);
-
-        // Ensure unique slug
-        if (Blog::where('slug', $slug)->exists()) {
-            $slug .= '-' . time();
-        }
-
-//     //     dd(
-//     // $request->hasFile('featured_image'),
-//     // $request->file('featured_image')
-// );
-
-
-        if ($request->hasFile('featured_image')) {
-            $data['featured_image'] =
-                $request->file('featured_image')->store('blogs', 'public');
-        }
-
-        $blog = Blog::create([
-            'user_id'     => Auth::id(),
-            'category_id' => $data['category_id'],
-            'title'       => $data['title'],
-            'slug'        => $slug,
-            'content'     => $data['content'],
-            'status'      => 'draft',
-        ]);
-
-        if (! empty($data['tags'])) {
-            $blog->tags()->sync($data['tags']);
-        }
-
-        return redirect()
-            ->route('author.blogs.index')
-            ->with('success', 'Blog created as draft.');
+    $slug = Str::slug($data['title']);
+    if (Blog::where('slug', $slug)->exists()) {
+        $slug .= '-' . time();
     }
+
+    $blog = Blog::create([
+        'user_id'     => Auth::id(),
+        'category_id' => $data['category_id'],
+        'title'       => $data['title'],
+        'slug'        => $slug,
+        'content'     => $data['content'],
+        'status'      => 'draft',
+    ]);
+
+    // 🔥 FIX
+    if ($request->hasFile('featured_image')) {
+        $path = $request->file('featured_image')
+            ->store('blogs', 'public');
+
+        $blog->featured_image = $path;
+        $blog->save();
+    }
+
+    if (!empty($data['tags'])) {
+        $blog->tags()->sync($data['tags']);
+    }
+
+    return redirect()
+        ->route('author.blogs.index')
+        ->with('success', 'Blog created as draft.');
+}
+
 
     /**
      * Edit blog

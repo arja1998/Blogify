@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+    Schema::create('blog_likes', function (Blueprint $table) {
     $table->id();
     $table->foreignId('blog_id')->constrained()->cascadeOnDelete();
     $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-
-    $table->text('comment');
-    $table->enum('status', ['pending', 'approved'])->default('approved');
-    $table->foreignId('parent_id')->nullable()->constrained('comments')->cascadeOnDelete();
-
     $table->timestamps();
-        });
+
+    $table->unique(['blog_id', 'user_id']); // prevent double like
+       });
     }
 
     /**
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('blog_likes');
     }
 };

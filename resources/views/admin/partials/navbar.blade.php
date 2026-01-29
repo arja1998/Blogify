@@ -61,7 +61,7 @@
     </a>
 
     <!-- Logout -->
-    <form method="POST" action="{{ route('logout') }}" class="mb-0">
+    <form method="POST" action="{{ route('admin.logout') }}" class="mb-0">
         @csrf
         <button type="submit" class="btn btn-link nav-link p-0 text-decoration-none">
             Logout

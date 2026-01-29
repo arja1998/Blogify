@@ -43,17 +43,7 @@
                         </td>
                         <td>
 
-                            {{-- Approve --}}
-                            @if($comment->status === 'pending')
-                                <form method="POST"
-                                      action="{{ route('admin.comments.approve', $comment) }}"
-                                      class="d-inline">
-                                    @csrf
-                                    <button class="btn btn-sm btn-success">
-                                        Approve
-                                    </button>
-                                </form>
-                            @endif
+                           
 
                             {{-- Delete --}}
                             <form method="POST"
